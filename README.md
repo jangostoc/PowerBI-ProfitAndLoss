@@ -59,7 +59,7 @@ IF ( SELECTEDVALUE ( dCuenta[Tipo] ) = "Subtotal",
 2. *Transformar datos → Administrar parámetros* → cambia `RutaDatos` por la ruta completa de la carpeta `data\` de este repositorio en tu ordenador (terminada en `\`). Todas las consultas leen de ese parámetro.
 3. *Inicio → Actualizar*.
 
-Estructura: `RollingForecast.SemanticModel/` contiene el modelo en formato TMDL (tablas, relaciones y medidas DAX legibles), `RollingForecast.Report/` el informe, `data/` los datos de ejemplo, `src/` el script que los genera y `docs/` la guía paso a paso del proyecto.
+Estructura: `RollingForecast.SemanticModel/` contiene el modelo en formato TMDL (tablas, relaciones y medidas DAX legibles), `RollingForecast.Report/` el informe, `powerquery/` el código M de cada consulta (para leerlo sin abrir Power BI), `data/` los datos de ejemplo, `src/` el script que los genera y `docs/` la guía paso a paso del proyecto.
 
 ## Qué aprendí
 - Una columna de tipo *Fecha/hora* no se relaciona con una de tipo *Fecha* aunque se vean iguales: Power BI deja los datos fuera sin dar ningún error.
