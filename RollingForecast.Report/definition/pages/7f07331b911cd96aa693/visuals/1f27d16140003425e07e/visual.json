@@ -83,19 +83,18 @@
         "sort": [
           {
             "field": {
-              "Measure": {
+              "Column": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "_Medidas"
+                    "Entity": "dCalendario"
                   }
                 },
-                "Property": "Real"
+                "Property": "AñoMes"
               }
             },
-            "direction": "Descending"
+            "direction": "Ascending"
           }
-        ],
-        "isDefaultSort": true
+        ]
       }
     },
     "objects": {

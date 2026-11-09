@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "_Medidas.Ppto",
-              "nativeQueryRef": "Ppto",
+              "nativeQueryRef": "EBITDA Ppto",
+              "displayName": "EBITDA Ppto",
               "format": "#,0.0 \"€\";-#,0.0 \"€\";#,0.0 \"€\""
             }
           ]

@@ -23,6 +23,9 @@ table dCuenta
 		lineageTag: d6a30f13-0fc7-4cc3-b99e-36512f5f2b73
 		summarizeBy: none
 		sourceColumn: Cuenta
+		sortByColumn: Orden
+
+		changedProperty = SortByColumn
 
 		annotation SummarizationSetBy = Automatic
 

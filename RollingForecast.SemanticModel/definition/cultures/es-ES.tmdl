@@ -1403,6 +1403,16 @@ cultureInfo es-ES
 			          "ppto": {
 			            "State": "Generated"
 			          }
+			        },
+			        {
+			          "EBITDA Ppto": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
 			        }
 			      ]
 			    },
