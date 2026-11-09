@@ -43,7 +43,7 @@ table fPresupuesto
 		mode: import
 		source =
 				let
-				    Origen = Excel.Workbook(File.Contents("C:\Users\javie\OneDrive\Escritorio\Power BI y excel avanzado - Curso\Power BI - Claude noviembre\proyecto05_rolling_forecast\05-rolling-forecast\data\presupuesto_2026.xlsx"), null, true),
+				    Origen = Excel.Workbook(File.Contents(RutaDatos & "presupuesto_2026.xlsx"), null, true),
 				    Ppto2026_Sheet = Origen{[Item="Ppto2026",Kind="Sheet"]}[Data],
 				    #"Encabezados promovidos" = Table.PromoteHeaders(Ppto2026_Sheet, [PromoteAllScalars=true]),
 				    #"Otras columnas con anulación de dinamización" = Table.UnpivotOtherColumns(#"Encabezados promovidos", {"IdCuenta", "IdLinea"}, "Atributo", "Valor"),

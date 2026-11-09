@@ -29,7 +29,7 @@ table dLinea
 		mode: import
 		source =
 				let
-				    Origen = Excel.Workbook(File.Contents("C:\Users\javie\OneDrive\Escritorio\Power BI y excel avanzado - Curso\Power BI - Claude noviembre\proyecto05_rolling_forecast\05-rolling-forecast\data\maestros.xlsx"), null, true),
+				    Origen = Excel.Workbook(File.Contents(RutaDatos & "maestros.xlsx"), null, true),
 				    Lineas_Sheet = Origen{[Item="Lineas",Kind="Sheet"]}[Data],
 				    #"Encabezados promovidos" = Table.PromoteHeaders(Lineas_Sheet, [PromoteAllScalars=true]),
 				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"IdLinea", type text}, {"Linea", type text}, {"Descripcion", type text}})

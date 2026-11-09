@@ -2,7 +2,7 @@
 
 **Informe de FP&A en Power BI que estima el cierre de 2026 en tres escenarios, proyecta los próximos 12 meses y mide la sensibilidad del EBITDA a las ventas.**
 
-<!-- Añadir captura: img/01_resumen.png -->
+![Resumen ejecutivo](img/01_resumen.png)
 
 ## Contexto de negocio
 Grupo Power Tower fabrica torres eólicas, mantiene parques y presta servicios de ingeniería. Con el real cerrado a septiembre de 2026, el director financiero necesita saber cómo cerrará el año frente a un presupuesto ambicioso, qué esperar en los próximos 12 meses y cuánto margen de maniobra queda. El informe permite cambiar de escenario (base, optimista o pesimista) y ajustar las ventas con un deslizador para ver el impacto al momento.
@@ -16,7 +16,6 @@ Datos sintéticos (363 filas), generados con `src/generar_datos.py`:
 **Transformaciones en Power Query:** conversión del periodo de texto a fecha, despivotado del presupuesto (de 12 columnas de meses a filas), tipado explícito de columnas y parámetro `RutaDatos` para que el proyecto sea portable.
 
 ## Modelo de datos
-<!-- Añadir captura: img/04_modelo.png -->
 
 Esquema en estrella con dos tablas de hechos (`fReal`, `fPresupuesto`) y tres dimensiones compartidas (`dCalendario`, `dCuenta`, `dLinea`). Los escenarios y sus drivers son **tablas desconectadas**: no filtran datos, solo alimentan el cálculo del forecast.
 
@@ -51,11 +50,13 @@ IF ( SELECTEDVALUE ( dCuenta[Tipo] ) = "Subtotal",
 **Recomendación:** reformular el objetivo de 2026, poner en marcha un plan comercial en Torres eólicas y revisar los precios y las cláusulas de inflación de los contratos nuevos.
 
 ## Capturas
-<!-- Añadir capturas: img/02_pyg.png e img/03_tendencia.png -->
+![Cuenta de resultados](img/02_pyg.png)
+
+![Tendencia](img/03_tendencia.png)
 
 ## Cómo abrirlo
 1. Clona el repositorio y abre `RollingForecast.pbip` con Power BI Desktop.
-2. *Transformar datos* → en cada consulta, cambia la ruta del archivo de origen por la de la carpeta `data/` de este repositorio.
+2. *Transformar datos → Administrar parámetros* → cambia `RutaDatos` por la ruta completa de la carpeta `data\` de este repositorio en tu ordenador (terminada en `\`). Todas las consultas leen de ese parámetro.
 3. *Inicio → Actualizar*.
 
 Estructura: `RollingForecast.SemanticModel/` contiene el modelo en formato TMDL (tablas, relaciones y medidas DAX legibles), `RollingForecast.Report/` el informe, `data/` los datos de ejemplo, `src/` el script que los genera y `docs/` la guía paso a paso del proyecto.

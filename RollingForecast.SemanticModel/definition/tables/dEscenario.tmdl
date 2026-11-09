@@ -30,7 +30,7 @@ table dEscenario
 		mode: import
 		source =
 				let
-				    Origen = Excel.Workbook(File.Contents("C:\Users\javie\OneDrive\Escritorio\Power BI y excel avanzado - Curso\Power BI - Claude noviembre\proyecto05_rolling_forecast\05-rolling-forecast\data\maestros.xlsx"), null, true),
+				    Origen = Excel.Workbook(File.Contents(RutaDatos & "maestros.xlsx"), null, true),
 				    Escenarios_Sheet = Origen{[Item="Escenarios",Kind="Sheet"]}[Data],
 				    #"Encabezados promovidos" = Table.PromoteHeaders(Escenarios_Sheet, [PromoteAllScalars=true]),
 				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"Orden", Int64.Type}})

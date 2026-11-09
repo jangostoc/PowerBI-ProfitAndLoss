@@ -43,7 +43,7 @@ table fReal
 		mode: import
 		source =
 				let
-				    Origen = Csv.Document(File.Contents("C:\Users\javie\OneDrive\Escritorio\Power BI y excel avanzado - Curso\Power BI - Claude noviembre\proyecto05_rolling_forecast\05-rolling-forecast\data\real_ERP.csv"),[Delimiter=";", Columns=4, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    Origen = Csv.Document(File.Contents(RutaDatos & "real_ERP.csv"),[Delimiter=";", Columns=4, Encoding=65001, QuoteStyle=QuoteStyle.None]),
 				    #"Encabezados promovidos" = Table.PromoteHeaders(Origen, [PromoteAllScalars=true]),
 				    #"Personalizada agregada" = Table.AddColumn(#"Encabezados promovidos", "Fecha", each #date(Number.FromText(Text.Start([Periodo], 4)), Number.FromText(Text.End([Periodo], 2)), 1)),
 				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Personalizada agregada",{{"Fecha", type date}}),

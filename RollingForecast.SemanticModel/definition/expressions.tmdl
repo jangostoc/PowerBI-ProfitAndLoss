@@ -1,4 +1,4 @@
-expression RutaDatos = "data\" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+expression RutaDatos = "C:\TuRuta\PowerBI-P-L\data\" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
 	lineageTag: 7821ce0e-9fdb-4713-8f3d-7ce5b9d0b766
 
 	annotation PBI_NavigationStepName = Navegación
