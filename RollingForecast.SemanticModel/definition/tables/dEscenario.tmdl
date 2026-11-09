@@ -1,0 +1,43 @@
+table dEscenario
+	lineageTag: ce863d3e-d2a5-46df-8d2a-9463fc905a0b
+
+	column Orden
+		dataType: int64
+		formatString: 0
+		lineageTag: 39b53498-0797-484f-b57e-ec453e8afa9a
+		summarizeBy: sum
+		sourceColumn: Orden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Escenario
+		dataType: string
+		lineageTag: ae8acb3d-1ad9-4c7c-991f-49c0e5194b7b
+		summarizeBy: none
+		sourceColumn: Escenario
+
+		annotation SummarizationSetBy = Automatic
+
+	column Descripcion
+		dataType: string
+		lineageTag: 5039509b-7e7d-4df5-88f9-5f1cee3c0e4c
+		summarizeBy: none
+		sourceColumn: Descripcion
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dEscenario = m
+		mode: import
+		source =
+				let
+				    Origen = Excel.Workbook(File.Contents("C:\Users\javie\OneDrive\Escritorio\Power BI y excel avanzado - Curso\Power BI - Claude noviembre\proyecto05_rolling_forecast\05-rolling-forecast\data\maestros.xlsx"), null, true),
+				    Escenarios_Sheet = Origen{[Item="Escenarios",Kind="Sheet"]}[Data],
+				    #"Encabezados promovidos" = Table.PromoteHeaders(Escenarios_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"Orden", Int64.Type}})
+				in
+				    #"Tipo cambiado"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,27 @@
+model Model
+	culture: es-ES
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: es-ES
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["RutaDatos","fReal","fPresupuesto","dCuenta","dLinea","dEscenario","fDrivers","_Medidas"]
+
+annotation PBI_ProTooling = ["DevMode","DaxQueryView_Desktop"]
+
+ref table fReal
+ref table fPresupuesto
+ref table dCuenta
+ref table dLinea
+ref table dEscenario
+ref table fDrivers
+ref table dCalendario
+ref table 'Ajuste Ventas'
+ref table _Medidas
+ref table _MedidasColor
+
+ref cultureInfo es-ES
+

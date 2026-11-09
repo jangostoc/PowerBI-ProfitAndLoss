@@ -1,0 +1,8 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "7f07331b911cd96aa693",
+  "displayName": "3. Tendencia",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280
+}

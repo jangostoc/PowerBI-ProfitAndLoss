@@ -1,0 +1,42 @@
+table dLinea
+	lineageTag: 54264582-a4e5-4553-aa9c-b678dfcde399
+
+	column IdLinea
+		dataType: string
+		lineageTag: 301cecd7-5f7e-4226-a216-41a65c0baa05
+		summarizeBy: none
+		sourceColumn: IdLinea
+
+		annotation SummarizationSetBy = Automatic
+
+	column Linea
+		dataType: string
+		lineageTag: b3e96512-f4fa-4929-88fb-ba8a5be2485c
+		summarizeBy: none
+		sourceColumn: Linea
+
+		annotation SummarizationSetBy = Automatic
+
+	column Descripcion
+		dataType: string
+		lineageTag: 83d6a99e-525c-460b-a9fd-d8905585f080
+		summarizeBy: none
+		sourceColumn: Descripcion
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dLinea = m
+		mode: import
+		source =
+				let
+				    Origen = Excel.Workbook(File.Contents("C:\Users\javie\OneDrive\Escritorio\Power BI y excel avanzado - Curso\Power BI - Claude noviembre\proyecto05_rolling_forecast\05-rolling-forecast\data\maestros.xlsx"), null, true),
+				    Lineas_Sheet = Origen{[Item="Lineas",Kind="Sheet"]}[Data],
+				    #"Encabezados promovidos" = Table.PromoteHeaders(Lineas_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"IdLinea", type text}, {"Linea", type text}, {"Descripcion", type text}})
+				in
+				    #"Tipo cambiado"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

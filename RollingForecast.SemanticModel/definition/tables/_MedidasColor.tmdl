@@ -1,0 +1,36 @@
+table _MedidasColor
+	lineageTag: 1ae35032-db07-467c-86f9-ae13bc0dbd4a
+
+	measure 'Color Gap' = IF ( [Gap EBITDA vs Ppto] < 0, "#C0392B", "#1E8449" )
+		lineageTag: 37c26508-6f42-4024-88e8-96222b18cf72
+
+	measure 'Color Desviacion' = IF ( [Desv. vs Ppto] < 0, "#C0392B", "#1E8449" )
+		lineageTag: afc2567b-6ab2-482b-8a4d-46f5da9e199c
+
+	measure 'Color Fondo PyG' = IF ( SELECTEDVALUE ( dCuenta[Tipo] ) = "Subtotal", "#E8EEF4" )
+		lineageTag: 892b431c-9100-4dae-958e-15a2f5ae7435
+
+	measure 'Ventas Ppto' = CALCULATE ( [PyG Ppto], dCuenta[IdCuenta] = "VEN" )
+		formatString: #,0.###############\ "€";-#,0.###############\ "€";#,0.###############\ "€"
+		lineageTag: 9576c954-1ee7-48e4-911a-07dcff72c12e
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-ES"}
+
+	column Column
+		isHidden
+		formatString: 0
+		lineageTag: ff3b96bd-d675-4717-bba7-a660562f0468
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _MedidasColor = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = 0ca6b23080834fe1ab464ba54dfbc5d6
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+

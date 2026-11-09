@@ -1,0 +1,59 @@
+table dCuenta
+	lineageTag: 20f12b1c-d82d-4240-be60-88a989beb243
+
+	column Orden
+		dataType: int64
+		formatString: 0
+		lineageTag: 6f3d8f87-2d7d-46d7-aecc-66a8d8295ee6
+		summarizeBy: sum
+		sourceColumn: Orden
+
+		annotation SummarizationSetBy = Automatic
+
+	column IdCuenta
+		dataType: string
+		lineageTag: b2428d02-1739-4e4d-8852-60143f3b5ba9
+		summarizeBy: none
+		sourceColumn: IdCuenta
+
+		annotation SummarizationSetBy = Automatic
+
+	column Cuenta
+		dataType: string
+		lineageTag: d6a30f13-0fc7-4cc3-b99e-36512f5f2b73
+		summarizeBy: none
+		sourceColumn: Cuenta
+
+		annotation SummarizationSetBy = Automatic
+
+	column Tipo
+		dataType: string
+		lineageTag: 07c30dbb-3257-4f0b-9414-3292da29f213
+		summarizeBy: none
+		sourceColumn: Tipo
+
+		annotation SummarizationSetBy = Automatic
+
+	column GrupoDriver
+		dataType: string
+		lineageTag: 3e92a3aa-186a-4a39-817c-55d3b960d90d
+		summarizeBy: none
+		sourceColumn: GrupoDriver
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dCuenta = m
+		mode: import
+		source =
+				let
+				    Origen = Excel.Workbook(File.Contents("C:\Users\javie\OneDrive\Escritorio\Power BI y excel avanzado - Curso\Power BI - Claude noviembre\proyecto05_rolling_forecast\05-rolling-forecast\data\maestros.xlsx"), null, true),
+				    Cuentas_Sheet = Origen{[Item="Cuentas",Kind="Sheet"]}[Data],
+				    #"Encabezados promovidos" = Table.PromoteHeaders(Cuentas_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"Orden", Int64.Type}})
+				in
+				    #"Tipo cambiado"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

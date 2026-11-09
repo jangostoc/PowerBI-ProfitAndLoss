@@ -1,0 +1,127 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "4055de596d4256b3e01a",
+  "position": {
+    "x": 664.86744113961777,
+    "y": 517.980227942986,
+    "z": 7000,
+    "height": 152.5,
+    "width": 227.5,
+    "tabOrder": 7000
+  },
+  "visual": {
+    "visualType": "pivotTable",
+    "query": {
+      "queryState": {
+        "Columns": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dEscenario"
+                    }
+                  },
+                  "Property": "Escenario"
+                }
+              },
+              "queryRef": "dEscenario.Escenario",
+              "nativeQueryRef": "Escenario",
+              "active": true
+            }
+          ]
+        },
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Ventas Cierre"
+                }
+              },
+              "queryRef": "_Medidas.Ventas Cierre",
+              "nativeQueryRef": "Ventas Cierre"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "EBITDA Cierre"
+                }
+              },
+              "queryRef": "_Medidas.EBITDA Cierre",
+              "nativeQueryRef": "EBITDA Cierre"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Margen EBITDA %"
+                }
+              },
+              "queryRef": "_Medidas.Margen EBITDA %",
+              "nativeQueryRef": "Margen EBITDA %"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Gap EBITDA vs Ppto"
+                }
+              },
+              "queryRef": "_Medidas.Gap EBITDA vs Ppto",
+              "nativeQueryRef": "Gap EBITDA vs Ppto"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "values": [
+        {
+          "properties": {
+            "valuesOnRow": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTotals": [
+        {
+          "properties": {
+            "columnSubtotals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

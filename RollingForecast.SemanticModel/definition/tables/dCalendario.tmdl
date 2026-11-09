@@ -1,0 +1,72 @@
+table dCalendario
+	lineageTag: 6c7a56a9-ed6b-4889-9151-ebcb1ce52d97
+	dataCategory: Time
+
+	column Fecha
+		isKey
+		formatString: General Date
+		lineageTag: bd178991-be80-4ef5-b16e-6782c7b8de08
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Fecha]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Año
+		formatString: 0
+		lineageTag: c31e85d8-268b-4282-bcff-dc086e0e2d13
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Año]
+
+		annotation SummarizationSetBy = Automatic
+
+	column MesNum
+		formatString: 0
+		lineageTag: 72e8e951-a7a7-47e4-9d76-7aa1f01845b4
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [MesNum]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Mes
+		lineageTag: 3492ddbe-4ebb-46bb-9597-4068a69aaf56
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Mes]
+
+		annotation SummarizationSetBy = Automatic
+
+	column AñoMes
+		lineageTag: 72e92247-4a02-48fd-bc04-1bfaf4593fea
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [AñoMes]
+
+		annotation SummarizationSetBy = Automatic
+
+	column InicioMes
+		formatString: General Date
+		lineageTag: 2fb8db32-b404-489a-9892-bfa52788eedb
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [InicioMes]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dCalendario = calculated
+		mode: import
+		source =
+				
+				ADDCOLUMNS (
+				    SELECTCOLUMNS ( CALENDAR ( DATE ( 2025, 1, 1 ), DATE ( 2027, 12, 31 ) ), "Fecha", [Date] ),
+				    "Año",       YEAR ( [Fecha] ),
+				    "MesNum",    MONTH ( [Fecha] ),
+				    "Mes",       FORMAT ( [Fecha], "mmm" ),
+				    "AñoMes",    FORMAT ( [Fecha], "yyyy-mm" ),
+				    "InicioMes", DATE ( YEAR ( [Fecha] ), MONTH ( [Fecha] ), 1 )
+				)
+
+	annotation PBI_Id = 5d762757717a40358a6b06248e8b7596
+

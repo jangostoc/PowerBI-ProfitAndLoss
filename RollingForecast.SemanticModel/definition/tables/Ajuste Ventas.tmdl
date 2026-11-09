@@ -1,0 +1,27 @@
+table 'Ajuste Ventas'
+	lineageTag: 12a1a9db-22e5-49d7-bd12-a68e7ca01b2e
+
+	measure 'Ajuste Ventas Valor' = SELECTEDVALUE('Ajuste Ventas'[Ajuste Ventas], 0)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: d1b2d39d-8505-4b6c-b847-6196f558c3db
+
+	column 'Ajuste Ventas'
+		lineageTag: 1ac4ded5-e4a9-457c-909e-0a76761da269
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'Ajuste Ventas' = calculated
+		mode: import
+		source = GENERATESERIES(-0.1, 0.1, 0.01)
+
+	annotation PBI_Id = 9e5d9ad5058046358c4baa218cd9832f
+

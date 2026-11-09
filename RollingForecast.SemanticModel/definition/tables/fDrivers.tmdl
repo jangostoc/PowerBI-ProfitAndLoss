@@ -1,0 +1,44 @@
+table fDrivers
+	lineageTag: 777b3b11-1208-4176-b72c-9490d03868c1
+
+	column Escenario
+		dataType: string
+		lineageTag: 88e56886-288c-4032-b7e8-ef47d7ccf1a1
+		summarizeBy: none
+		sourceColumn: Escenario
+
+		annotation SummarizationSetBy = Automatic
+
+	column GrupoDriver
+		dataType: string
+		lineageTag: 322e9f84-7451-4beb-af7f-f4774fe154ab
+		summarizeBy: none
+		sourceColumn: GrupoDriver
+
+		annotation SummarizationSetBy = Automatic
+
+	column Variacion
+		dataType: double
+		lineageTag: 66098afc-e317-4ac1-98a8-07fd7ecf8616
+		summarizeBy: sum
+		sourceColumn: Variacion
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fDrivers = m
+		mode: import
+		source =
+				let
+				    Origen = Excel.Workbook(File.Contents("C:\Users\javie\OneDrive\Escritorio\Power BI y excel avanzado - Curso\Power BI - Claude noviembre\proyecto05_rolling_forecast\05-rolling-forecast\data\maestros.xlsx"), null, true),
+				    Drivers_Sheet = Origen{[Item="Drivers",Kind="Sheet"]}[Data],
+				    #"Encabezados promovidos" = Table.PromoteHeaders(Drivers_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"Variacion", type number}})
+				in
+				    #"Tipo cambiado"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

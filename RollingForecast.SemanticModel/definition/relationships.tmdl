@@ -1,0 +1,24 @@
+relationship AutoDetected_ca77e64d-ed93-4a2d-8c9c-5eddcae9a6a5
+	fromColumn: fReal.IdCuenta
+	toColumn: dCuenta.IdCuenta
+
+relationship AutoDetected_fa128c5e-ec7f-4e47-b9a7-e222329f4034
+	fromColumn: fPresupuesto.IdCuenta
+	toColumn: dCuenta.IdCuenta
+
+relationship AutoDetected_afcceda6-637b-44c2-8b07-6661f0f66c90
+	fromColumn: fReal.IdLinea
+	toColumn: dLinea.IdLinea
+
+relationship AutoDetected_bb8ee70b-1f84-4ea5-bd9a-3bf5aad6045f
+	fromColumn: fPresupuesto.IdLinea
+	toColumn: dLinea.IdLinea
+
+relationship 335360f6-fd97-3dd9-5f74-ea79afe54071
+	fromColumn: fReal.Fecha
+	toColumn: dCalendario.Fecha
+
+relationship 72a2d93b-840c-45c0-3771-5f560d7232ba
+	fromColumn: fPresupuesto.Fecha
+	toColumn: dCalendario.Fecha
+

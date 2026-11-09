@@ -1,0 +1,160 @@
+table _Medidas
+	lineageTag: 0d4a8fec-ea30-43a4-a715-257777650278
+
+	measure Ppto = SUM ( fPresupuesto[Importe] )
+		formatString: #,0
+		lineageTag: ceaf760d-ac03-4aaa-a5eb-bcec914d034f
+
+	measure Real = SUM ( fReal[Importe] )
+		formatString: #,0
+		lineageTag: 1d231fea-f520-4c4c-b71e-1adb463e2a02
+
+	measure 'Último Mes Real' =
+			
+			CALCULATE ( MAX ( fReal[Fecha] ), REMOVEFILTERS () )
+		formatString: General Date
+		lineageTag: 3670852f-2bc6-42de-9d39-d9a5936ff9f0
+
+	measure Forecast =
+			
+			VAR vUltimoReal   = [Último Mes Real]
+			VAR vFinHorizonte = EDATE ( vUltimoReal, 12 )
+			VAR vEscenario    = SELECTEDVALUE ( dEscenario[Escenario], "Base" )
+			VAR vGVentas =
+			    LOOKUPVALUE ( fDrivers[Variacion], fDrivers[Escenario], vEscenario, fDrivers[GrupoDriver], "Ventas" )
+			        + [Ajuste Ventas Valor]
+			VAR vMesesFuturos =
+			    FILTER (
+			        VALUES ( dCalendario[InicioMes] ),
+			        dCalendario[InicioMes] > vUltimoReal
+			            && dCalendario[InicioMes] <= vFinHorizonte
+			    )
+			RETURN
+			    SUMX (
+			        vMesesFuturos,
+			        SUMX (
+			            VALUES ( dCuenta[GrupoDriver] ),
+			            VAR vGrupo = dCuenta[GrupoDriver]
+			            VAR vG =
+			                LOOKUPVALUE ( fDrivers[Variacion], fDrivers[Escenario], vEscenario, fDrivers[GrupoDriver], vGrupo )
+			            VAR vFactor =
+			                SWITCH (
+			                    vGrupo,
+			                    "Ventas",          1 + vGVentas,
+			                    "Coste de ventas", ( 1 + vGVentas ) * ( 1 + vG ),
+			                    1 + vG
+			                )
+			            VAR vBaseAnoAnterior =
+			                CALCULATE ( [Real], SAMEPERIODLASTYEAR ( dCalendario[Fecha] ) )
+			            RETURN
+			                vBaseAnoAnterior * vFactor
+			        )
+			    )
+		formatString: #,0
+		lineageTag: 07701e8b-7ab3-4af2-9e52-0154a5d5341e
+
+	measure Cierre = [Real] + [Forecast]
+		formatString: #,0
+		lineageTag: e45d3dbe-a45d-4d58-b1b5-743cfc25a52a
+
+	measure 'PyG Real' =
+			
+			VAR vTipo  = SELECTEDVALUE ( dCuenta[Tipo] )
+			VAR vOrden = SELECTEDVALUE ( dCuenta[Orden] )
+			RETURN
+			    IF (
+			        vTipo = "Subtotal",
+			        CALCULATE ( [Real], REMOVEFILTERS ( dCuenta ), dCuenta[Orden] < vOrden, dCuenta[Tipo] = "Detalle" ),
+			        [Real]
+			    )
+		formatString: #,0
+		lineageTag: b818c2ec-532e-4f86-8af3-37b849a3f726
+
+	measure 'PyG Ppto' =
+			
+			VAR vTipo  = SELECTEDVALUE ( dCuenta[Tipo] )
+			VAR vOrden = SELECTEDVALUE ( dCuenta[Orden] )
+			RETURN
+			    IF (
+			        vTipo = "Subtotal",
+			        CALCULATE ( [Ppto], REMOVEFILTERS ( dCuenta ), dCuenta[Orden] < vOrden, dCuenta[Tipo] = "Detalle" ),
+			        [Ppto]
+			    )
+		formatString: #,0
+		lineageTag: ff0016ed-434f-46d9-9b79-121ebb716699
+
+	measure 'PyG Cierre' =
+			
+			VAR vTipo  = SELECTEDVALUE ( dCuenta[Tipo] )
+			VAR vOrden = SELECTEDVALUE ( dCuenta[Orden] )
+			RETURN
+			    IF (
+			        vTipo = "Subtotal",
+			        CALCULATE ( [Cierre], REMOVEFILTERS ( dCuenta ), dCuenta[Orden] < vOrden, dCuenta[Tipo] = "Detalle" ),
+			        [Cierre]
+			    )
+		formatString: #,0
+		lineageTag: 2d117fe5-86ed-4b49-848e-e5a3cdaa006a
+
+	measure 'Desv. vs Ppto' = [PyG Cierre] - [PyG Ppto]
+		lineageTag: 50ac86d5-4337-4083-b2cb-fc171b1049be
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Desv. % vs Ppto' = DIVIDE ( [Desv. vs Ppto], ABS ( [PyG Ppto] ))
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: 4c06e574-fbf8-4589-860b-77cae5104165
+
+	measure 'PyG Real Año Anterior' = CALCULATE ( [PyG Real], SAMEPERIODLASTYEAR ( dCalendario[Fecha] ) )
+		formatString: #,0
+		lineageTag: 0858d775-7b03-4379-996f-4fd4f6afcd58
+
+	measure 'Ventas Cierre' = CALCULATE ( [PyG Cierre], dCuenta[IdCuenta] = "VEN" )
+		formatString: #,0
+		lineageTag: 2375d73a-b8fe-4c81-9785-21b394a7faae
+
+	measure 'EBITDA Cierre' = CALCULATE ( [PyG Cierre], dCuenta[IdCuenta] = "EBITDA" )
+		formatString: #,0
+		lineageTag: c28aef0d-159f-44cf-b769-0e30058ba3c8
+
+	measure 'EBITDA Ppto' = ```
+			CALCULATE ( [PyG Ppto],   dCuenta[IdCuenta] = "EBITDA" )
+			
+			```
+		formatString: #,0
+		lineageTag: 297663cc-290c-446a-9782-b37d7cb4968b
+
+	measure 'Margen EBITDA %' = ```
+			DIVIDE ( [EBITDA Cierre], [Ventas Cierre] )
+			
+			```
+		lineageTag: 853b17e0-68ee-4da2-b71b-cd389066cb68
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gap EBITDA vs Ppto' = ```
+			[EBITDA Cierre] - [EBITDA Ppto]
+			
+			```
+		formatString: #,0
+		lineageTag: 3957ed83-c0f6-4aae-93a5-21ff50a48638
+
+	measure 'Forecast 12M' =
+			
+			CALCULATE ( [Forecast], REMOVEFILTERS ( dCalendario ) )
+		lineageTag: aaa679d6-0a2f-4e7d-8688-e664faedc8fa
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition _Medidas = m
+		mode: import
+		source =
+				let
+				    Origen = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Columna1 = _t]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(Origen,{{"Columna1", type text}}),
+				    #"Columnas quitadas" = Table.RemoveColumns(#"Tipo cambiado",{"Columna1"})
+				in
+				    #"Columnas quitadas"
+
+	annotation PBI_ResultType = Table
+

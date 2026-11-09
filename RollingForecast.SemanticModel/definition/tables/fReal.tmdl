@@ -1,0 +1,58 @@
+table fReal
+	lineageTag: 6f6affbe-b6e2-4a4d-a208-d82928aee832
+
+	column IdCuenta
+		dataType: string
+		lineageTag: 8b4731d7-494d-4d0d-8206-ddc49c7caa77
+		summarizeBy: none
+		sourceColumn: IdCuenta
+
+		annotation SummarizationSetBy = Automatic
+
+	column IdLinea
+		dataType: string
+		lineageTag: 16327c1e-e955-44ee-8503-9d0787c102f3
+		summarizeBy: none
+		sourceColumn: IdLinea
+
+		annotation SummarizationSetBy = Automatic
+
+	column Importe
+		dataType: decimal
+		formatString: #,0.###############\ "€";-#,0.###############\ "€";#,0.###############\ "€"
+		lineageTag: f8aff193-f331-491f-9831-7e3818734f66
+		summarizeBy: sum
+		sourceColumn: Importe
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-ES"}
+
+	column Fecha
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 8993412e-1061-42a0-a4ec-384440dc3566
+		summarizeBy: none
+		sourceColumn: Fecha
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition fReal = m
+		mode: import
+		source =
+				let
+				    Origen = Csv.Document(File.Contents("C:\Users\javie\OneDrive\Escritorio\Power BI y excel avanzado - Curso\Power BI - Claude noviembre\proyecto05_rolling_forecast\05-rolling-forecast\data\real_ERP.csv"),[Delimiter=";", Columns=4, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Encabezados promovidos" = Table.PromoteHeaders(Origen, [PromoteAllScalars=true]),
+				    #"Personalizada agregada" = Table.AddColumn(#"Encabezados promovidos", "Fecha", each #date(Number.FromText(Text.Start([Periodo], 4)), Number.FromText(Text.End([Periodo], 2)), 1)),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Personalizada agregada",{{"Fecha", type date}}),
+				    #"Columnas quitadas" = Table.RemoveColumns(#"Tipo cambiado",{"Periodo"}),
+				    #"Tipo cambiado1" = Table.TransformColumnTypes(#"Columnas quitadas",{{"Importe", Currency.Type}})
+				in
+				    #"Tipo cambiado1"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

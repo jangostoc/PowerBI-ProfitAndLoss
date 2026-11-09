@@ -1,0 +1,61 @@
+table fPresupuesto
+	lineageTag: db418c83-f1b8-4dbf-976d-e236a4c44632
+
+	column IdCuenta
+		dataType: string
+		lineageTag: e4bc26f5-e114-48a6-8cb4-d0ab3f78201a
+		summarizeBy: none
+		sourceColumn: IdCuenta
+
+		annotation SummarizationSetBy = Automatic
+
+	column IdLinea
+		dataType: string
+		lineageTag: 7265a63a-b118-42bb-8750-5d0b55154886
+		summarizeBy: none
+		sourceColumn: IdLinea
+
+		annotation SummarizationSetBy = Automatic
+
+	column Importe
+		dataType: decimal
+		formatString: #,0.###############\ "€";-#,0.###############\ "€";#,0.###############\ "€"
+		lineageTag: f52b902f-998b-4998-995a-b3c19a332639
+		summarizeBy: sum
+		sourceColumn: Importe
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-ES"}
+
+	column Fecha
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: bb306a21-10c9-4fb3-93b3-5bd10cbd289a
+		summarizeBy: none
+		sourceColumn: Fecha
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition fPresupuesto = m
+		mode: import
+		source =
+				let
+				    Origen = Excel.Workbook(File.Contents("C:\Users\javie\OneDrive\Escritorio\Power BI y excel avanzado - Curso\Power BI - Claude noviembre\proyecto05_rolling_forecast\05-rolling-forecast\data\presupuesto_2026.xlsx"), null, true),
+				    Ppto2026_Sheet = Origen{[Item="Ppto2026",Kind="Sheet"]}[Data],
+				    #"Encabezados promovidos" = Table.PromoteHeaders(Ppto2026_Sheet, [PromoteAllScalars=true]),
+				    #"Otras columnas con anulación de dinamización" = Table.UnpivotOtherColumns(#"Encabezados promovidos", {"IdCuenta", "IdLinea"}, "Atributo", "Valor"),
+				    #"Columnas con nombre cambiado" = Table.RenameColumns(#"Otras columnas con anulación de dinamización",{{"Valor", "Importe"}, {"Atributo", "Mes"}}),
+				    #"Personalizada agregada" = Table.AddColumn(#"Columnas con nombre cambiado", "Personalizado", each #date(2026, List.PositionOf({"ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"}, [Mes]) + 1, 1)),
+				    #"Columnas quitadas" = Table.RemoveColumns(#"Personalizada agregada",{"Mes"}),
+				    #"Columnas con nombre cambiado1" = Table.RenameColumns(#"Columnas quitadas",{{"Personalizado", "Fecha"}}),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Columnas con nombre cambiado1",{{"Importe", Currency.Type}, {"Fecha", type date}})
+				in
+				    #"Tipo cambiado"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+
