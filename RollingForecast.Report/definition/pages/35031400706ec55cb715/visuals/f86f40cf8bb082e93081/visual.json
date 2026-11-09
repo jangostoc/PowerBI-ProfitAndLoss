@@ -23,13 +23,11 @@
                       "Entity": "_Medidas"
                     }
                   },
-                  "Property": "Ppto"
+                  "Property": "EBITDA Ppto"
                 }
               },
-              "queryRef": "_Medidas.Ppto",
-              "nativeQueryRef": "EBITDA Ppto",
-              "displayName": "EBITDA Ppto",
-              "format": "#,0.0 \"€\";-#,0.0 \"€\";#,0.0 \"€\""
+              "queryRef": "_Medidas.EBITDA Ppto",
+              "nativeQueryRef": "EBITDA Ppto1"
             }
           ]
         }
@@ -44,7 +42,7 @@
                     "Entity": "_Medidas"
                   }
                 },
-                "Property": "Ppto"
+                "Property": "EBITDA Ppto"
               }
             },
             "direction": "Descending"

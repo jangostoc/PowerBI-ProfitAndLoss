@@ -128,9 +128,8 @@ table _Medidas
 			DIVIDE ( [EBITDA Cierre], [Ventas Cierre] )
 			
 			```
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
 		lineageTag: 853b17e0-68ee-4da2-b71b-cd389066cb68
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Gap EBITDA vs Ppto' = ```
 			[EBITDA Cierre] - [EBITDA Ppto]
