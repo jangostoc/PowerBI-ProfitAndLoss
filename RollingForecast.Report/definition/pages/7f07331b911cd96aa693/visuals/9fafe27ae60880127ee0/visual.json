@@ -135,7 +135,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Ventas mensuales: Real, Forecast y Ppto'"
+                  "Value": "'EBITDA mensual: Real, Forecast y Ppto'"
                 }
               }
             }
